@@ -1,0 +1,1188 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>besteirinha para uma gatinha</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --blood: #8b0000;
+    --blood-bright: #cc1a1a;
+    --rose-dark: #6b0030;
+    --rose-mid: #a0104a;
+    --rose-light: #d4527f;
+    --rose-pale: #f0a0b8;
+    --night: #050308;
+    --night-2: #0d060f;
+    --night-3: #160b1a;
+    --mist: #2a1530;
+    --gold: #c9a84c;
+    --gold-pale: #f0d890;
+    --text-main: #f5e6ea;
+    --text-dim: #c4a0b0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    color: var(--text-main);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.8;
+    overflow-x: hidden;
+    cursor: crosshair;
+    user-select: none;
+  }
+
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  .site { position: relative; z-index: 2; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px 80px;
+    position: relative;
+    overflow: hidden;
+    max-width: none;
+    margin: 0;
+  }
+
+  .hero-moon {
+    position: absolute;
+    top: 60px;
+    right: 80px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 36%, #f8f0c8 0%, #e8d880 40%, #c4a830 80%, #8a7020 100%);
+    box-shadow: 0 0 40px 14px rgba(200,168,60,0.18), 0 0 80px 30px rgba(200,168,60,0.08);
+    animation: moonPulse 6s ease-in-out infinite;
+  }
+
+  @keyframes moonPulse {
+    0%,100% { box-shadow: 0 0 40px 14px rgba(200,168,60,0.18), 0 0 80px 30px rgba(200,168,60,0.08); }
+    50% { box-shadow: 0 0 60px 22px rgba(200,168,60,0.28), 0 0 120px 50px rgba(200,168,60,0.12); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    color: var(--rose-light);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: revealUp 1s 0.3s ease forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: 0.08em;
+    color: var(--text-main);
+    text-shadow: 0 0 30px rgba(139,0,0,0.7), 0 0 60px rgba(139,0,0,0.3);
+    opacity: 0;
+    animation: revealUp 1.1s 0.6s ease forwards;
+    position: relative;
+  }
+
+  .hero-title span {
+    color: var(--blood-bright);
+    text-shadow: 0 0 20px rgba(204,26,26,0.8), 0 0 50px rgba(204,26,26,0.4);
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 28px 0;
+    opacity: 0;
+    animation: revealUp 1s 1s ease forwards;
+  }
+
+  .hero-divider::before, .hero-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 140px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rose-mid), transparent);
+  }
+
+  .hero-divider-icon {
+    font-size: 1.4rem;
+    color: var(--rose-light);
+    filter: drop-shadow(0 0 6px var(--rose-mid));
+  }
+
+  .hero-subtitle {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--text-dim);
+    max-width: 580px;
+    margin-bottom: 26px;
+    opacity: 0;
+    animation: revealUp 1s 1.2s ease forwards;
+  }
+
+  /* Flores vindas da pasta modelo */
+  .model-flowers-frame {
+    display: block;
+    width: min(560px, 98vw);
+    height: 450px;
+    margin: -10px auto 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+    filter: drop-shadow(0 0 28px rgba(212,82,127,0.22));
+    opacity: 0;
+    animation: revealUp 1.3s 1.5s ease forwards;
+  }
+  /* â”€â”€ SECTION STYLES â”€â”€ */
+  section {
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    letter-spacing: 0.5em;
+    color: var(--rose-mid);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    color: var(--text-main);
+    text-shadow: 0 0 20px rgba(139,0,0,0.5);
+    margin-bottom: 32px;
+  }
+
+  /* â”€â”€ CARD GRID â”€â”€ */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .card {
+    background: linear-gradient(135deg, rgba(22,11,26,0.95) 0%, rgba(42,21,48,0.8) 100%);
+    border: 1px solid rgba(160,16,74,0.35);
+    border-radius: 4px;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blood-bright), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(204,26,26,0.6);
+    box-shadow: 0 16px 48px rgba(139,0,0,0.35);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 10px rgba(204,26,26,0.5));
+    display: block;
+  }
+
+  .card h3 {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.3rem;
+    color: var(--rose-pale);
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* â”€â”€ MESSAGE SECTION â”€â”€ */
+  .message-section {
+    text-align: center;
+    padding: 0 24px 100px;
+    margin-top: -54px;
+    position: relative;
+  }
+
+  .message-box {
+    max-width: 660px;
+    margin: 0 auto;
+    background: linear-gradient(160deg, rgba(22,11,26,0.97) 0%, rgba(107,0,48,0.2) 100%);
+    border: 1px solid rgba(160,16,74,0.4);
+    border-radius: 6px;
+    padding: 56px 48px;
+    position: relative;
+    box-shadow: 0 -22px 52px rgba(80,0,35,0.28), 0 18px 48px rgba(0,0,0,0.28);
+  }
+
+  .message-box::before, .message-box::after {
+    content: '✦';
+    position: absolute;
+    color: var(--blood-bright);
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 6px var(--blood));
+  }
+  .message-box::before { top: 20px; left: 24px; }
+  .message-box::after { bottom: 20px; right: 24px; }
+
+  .message-quote {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+    color: var(--text-main);
+    line-height: 2;
+    margin-bottom: 28px;
+  }
+
+  .message-sig {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1rem;
+    color: var(--rose-light);
+    letter-spacing: 0.2em;
+  }
+
+  /* â”€â”€ FOOTER â”€â”€ */
+  footer {
+    text-align: center;
+    padding: 40px 24px 60px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-style: italic;
+    border-top: 1px solid rgba(160,16,74,0.2);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* â”€â”€ SCROLL REVEAL â”€â”€ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* â”€â”€ HORIZONTAL RULE â”€â”€ */
+  .ornament-rule {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 0 auto 50px;
+    max-width: 400px;
+  }
+  .ornament-rule::before, .ornament-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(160,16,74,0.6), transparent);
+  }
+  .ornament-rule span {
+    color: var(--blood-bright);
+    font-size: 1rem;
+    letter-spacing: 6px;
+    filter: drop-shadow(0 0 5px var(--blood));
+  }
+
+  /* â”€â”€ ANIMATIONS â”€â”€ */
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* â”€â”€ BATS â”€â”€ */
+  .bat {
+    position: fixed;
+    left: 0;
+    top: 0;
+    font-size: 1.2rem;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transform: translate(var(--start-x), var(--start-y));
+    animation: batFlight var(--dur) cubic-bezier(.42,0,.58,1) forwards;
+    filter: drop-shadow(0 0 5px rgba(139,0,0,0.72));
+    will-change: transform, opacity;
+  }
+
+  .bat span {
+    display: block;
+    transform-origin: center;
+    animation: wingBeat 0.42s ease-in-out infinite;
+  }
+
+  @keyframes batFlight {
+    0% {
+      opacity: 0;
+      transform: translate(var(--start-x), var(--start-y)) scale(var(--scale)) rotate(var(--tilt-a));
+    }
+    10% { opacity: 0.8; }
+    28% {
+      transform: translate(var(--x1), var(--y1)) scale(calc(var(--scale) * 1.08)) rotate(var(--tilt-b));
+    }
+    52% {
+      transform: translate(var(--x2), var(--y2)) scale(var(--scale)) rotate(var(--tilt-c));
+    }
+    76% {
+      transform: translate(var(--x3), var(--y3)) scale(calc(var(--scale) * 0.94)) rotate(var(--tilt-b));
+    }
+    92% { opacity: 0.72; }
+    100% {
+      opacity: 0;
+      transform: translate(var(--end-x), var(--end-y)) scale(var(--scale)) rotate(var(--tilt-a));
+    }
+  }
+
+  @keyframes wingBeat {
+    0%, 100% { transform: scaleX(1) scaleY(1) translateY(0); }
+    35% { transform: scaleX(1.22) scaleY(0.78) translateY(-2px); }
+    65% { transform: scaleX(0.86) scaleY(1.12) translateY(1px); }
+  }
+
+  /* â”€â”€ CLICK BLOOD SPLATTER â”€â”€ */
+  .splatter {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    border-radius: 50%;
+    background: radial-gradient(circle, #cc1a1a 0%, #8b0000 60%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    animation: splatterAnim 0.6s ease forwards;
+  }
+
+  @keyframes splatterAnim {
+    0% { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
+  }
+
+  /* -- MOON EASTER EGG -- */
+  .hero-moon {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hero-moon:hover {
+    transform: scale(1.12);
+    box-shadow: 0 0 60px 22px rgba(200,168,60,0.35), 0 0 120px 50px rgba(200,168,60,0.15);
+  }
+
+  .moon-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(5,3,8,0.82);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .moon-modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .moon-modal {
+    text-align: center;
+    padding: 56px 48px;
+    max-width: 480px;
+    width: 90%;
+    background: linear-gradient(160deg, rgba(22,11,26,0.98) 0%, rgba(107,0,48,0.25) 100%);
+    border: 1px solid rgba(200,168,60,0.4);
+    border-radius: 6px;
+    box-shadow: 0 0 60px 10px rgba(200,168,60,0.12), 0 20px 60px rgba(0,0,0,0.5);
+    transform: translateY(24px) scale(0.96);
+    transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+    position: relative;
+  }
+  .moon-modal-overlay.open .moon-modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .moon-modal-glyph {
+    font-size: 3rem;
+    filter: drop-shadow(0 0 16px rgba(200,168,60,0.6));
+    display: block;
+    margin-bottom: 20px;
+    animation: moonPulse 4s ease-in-out infinite;
+  }
+
+  .moon-modal-phrase {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--gold-pale);
+    line-height: 1.8;
+    text-shadow: 0 0 20px rgba(200,168,60,0.35);
+    margin-bottom: 32px;
+  }
+
+  .moon-modal-close {
+    background: none;
+    border: 1px solid rgba(200,168,60,0.35);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    padding: 10px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+  }
+  .moon-modal-close:hover {
+    border-color: rgba(200,168,60,0.8);
+    color: var(--gold-pale);
+    box-shadow: 0 0 16px rgba(200,168,60,0.2);
+  }
+
+  /* -- COUNTDOWN -- */
+  .countdown-section {
+    text-align: center;
+    padding: 60px 24px 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .countdown-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    letter-spacing: 0.45em;
+    color: var(--rose-mid);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .countdown-title {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+    color: var(--text-dim);
+    margin-bottom: 36px;
+  }
+
+  .countdown-grid {
+    display: inline-flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .countdown-item {
+    background: linear-gradient(160deg, rgba(22,11,26,0.97) 0%, rgba(107,0,48,0.2) 100%);
+    border: 1px solid rgba(160,16,74,0.4);
+    border-radius: 6px;
+    padding: 24px 20px 18px;
+    min-width: 90px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(80,0,35,0.22);
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+
+  .countdown-item:hover {
+    border-color: rgba(204,26,26,0.55);
+    box-shadow: 0 12px 40px rgba(139,0,0,0.35);
+  }
+
+  .countdown-item::before {
+    content: '✦';
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 0.55rem;
+    color: var(--blood-bright);
+    filter: drop-shadow(0 0 4px var(--blood));
+  }
+
+  .countdown-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    color: var(--text-main);
+    text-shadow: 0 0 22px rgba(139,0,0,0.7), 0 0 50px rgba(139,0,0,0.3);
+    line-height: 1;
+    display: block;
+    min-width: 2ch;
+    transition: color 0.3s;
+  }
+
+  .countdown-unit {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    color: var(--rose-light);
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+  }
+
+  .countdown-separator {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    color: var(--blood-bright);
+    align-self: center;
+    text-shadow: 0 0 14px rgba(204,26,26,0.6);
+    animation: sepPulse 1s ease-in-out infinite;
+    padding-bottom: 18px;
+  }
+
+  @keyframes sepPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .countdown-done {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: var(--rose-pale);
+    text-shadow: 0 0 18px rgba(212,82,127,0.5);
+    animation: revealUp 1.2s ease forwards;
+  }
+
+  /* -- HOROSCOPO -- */
+  .horoscope-section {
+    text-align: center;
+    padding: 60px 24px 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .horoscope-sign-glyph {
+    font-size: 3.2rem;
+    display: block;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 14px rgba(160,16,74,0.7));
+    animation: moonPulse 5s ease-in-out infinite;
+  }
+
+  .horoscope-sign-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.55em;
+    color: var(--rose-mid);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: block;
+  }
+
+  .horoscope-btn {
+    background: linear-gradient(135deg, rgba(139,0,0,0.22) 0%, rgba(107,0,48,0.35) 100%);
+    border: 1px solid rgba(160,16,74,0.5);
+    color: var(--rose-pale);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    padding: 14px 38px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s, box-shadow 0.4s, color 0.4s, transform 0.2s;
+  }
+
+  .horoscope-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 120%, rgba(204,26,26,0.25) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .horoscope-btn:hover {
+    border-color: rgba(204,26,26,0.7);
+    box-shadow: 0 0 28px rgba(139,0,0,0.4), 0 0 6px rgba(204,26,26,0.3);
+    color: var(--text-main);
+    transform: translateY(-2px);
+  }
+
+  .horoscope-btn:hover::before { opacity: 1; }
+
+  .horoscope-btn:active { transform: translateY(0); }
+
+  .horoscope-btn .btn-star {
+    margin: 0 8px;
+    font-style: normal;
+    filter: drop-shadow(0 0 5px var(--blood-bright));
+  }
+
+  .horoscope-card {
+    max-width: 620px;
+    margin: 36px auto 0;
+    background: linear-gradient(160deg, rgba(22,11,26,0.98) 0%, rgba(107,0,48,0.22) 100%);
+    border: 1px solid rgba(160,16,74,0.45);
+    border-radius: 6px;
+    padding: 44px 40px;
+    box-shadow: 0 12px 48px rgba(80,0,35,0.32);
+    position: relative;
+    display: none;
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+    transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1);
+  }
+
+  .horoscope-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .horoscope-card::before {
+    content: '✦';
+    position: absolute;
+    top: 16px; left: 20px;
+    font-size: 0.6rem;
+    color: var(--blood-bright);
+    filter: drop-shadow(0 0 5px var(--blood));
+  }
+
+  .horoscope-card::after {
+    content: '✦';
+    position: absolute;
+    bottom: 16px; right: 20px;
+    font-size: 0.6rem;
+    color: var(--blood-bright);
+    filter: drop-shadow(0 0 5px var(--blood));
+  }
+
+  .horoscope-date-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.78rem;
+    letter-spacing: 0.4em;
+    color: var(--rose-mid);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .horoscope-text {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    color: var(--text-main);
+    line-height: 1.95;
+  }
+
+  .horoscope-lucky {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(160,16,74,0.25);
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .horoscope-lucky-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+  }
+
+  .horoscope-lucky-item strong {
+    color: var(--rose-light);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+
+  /* â”€â”€ RESPONSIVE â”€â”€ */
+  @media (max-width: 600px) {
+    .hero-moon { width: 70px; height: 70px; top: 30px; right: 24px; }
+    .message-box { padding: 36px 24px; }
+    .cards { grid-template-columns: 1fr; }
+    .countdown-item { min-width: 72px; padding: 18px 14px 14px; }
+    .countdown-separator { font-size: 1.6rem; }
+    .horoscope-card { padding: 32px 22px; }
+    .horoscope-lucky { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- MOON EASTER EGG MODAL -->
+<div class="moon-modal-overlay" id="moon-modal-overlay">
+  <div class="moon-modal">
+    <span class="moon-modal-glyph">🌕</span>
+    <p class="moon-modal-phrase">nem a lua brilha tanto quanto você</p>
+    <button class="moon-modal-close" id="moon-modal-close">fechar</button>
+  </div>
+</div>
+
+<div class="site">
+
+  <!-- â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â• -->
+  <section class="hero">
+
+    <div class="hero-moon"></div>
+
+    <p class="hero-eyebrow">para</p>
+
+    <h1 class="hero-title">Á<span>g</span>ata</h1>
+
+    <div class="hero-divider">
+      <span class="hero-divider-icon">🦇</span>
+    </div>
+
+    <p class="hero-subtitle">
+      Oi gatinha, fiz essa besteirinha bem boba para você, espero que goste!!
+    </p>
+    <iframe class="model-flowers-frame" src="modelo/index.html" title="Flores rosas animadas"></iframe>
+
+  </section>
+
+  <!-- â•â•â•â•â•â•â•â•â•â• MESSAGE â•â•â•â•â•â•â•â•â•â• -->
+  
+  <!-- HOROSCOPO -->
+  <div class="horoscope-section reveal">
+    <p class="countdown-label">seu horóscopo de hoje</p>
+    <span class="horoscope-sign-glyph">♈</span>
+    <span class="horoscope-sign-name">Áries</span>
+    <p class="countdown-title" style="margin-bottom:28px">os astros têm algo a dizer para você</p>
+    <button class="horoscope-btn" id="horoscope-btn">
+      <span class="btn-star">✦</span> revelar horóscopo <span class="btn-star">✦</span>
+    </button>
+    <div class="horoscope-card" id="horoscope-card">
+      <span class="horoscope-date-tag" id="horoscope-date-tag"></span>
+      <p class="horoscope-text" id="horoscope-text"></p>
+      <div class="horoscope-lucky">
+        <span class="horoscope-lucky-item">cor do dia: <strong id="lucky-color"></strong></span>
+        <span class="horoscope-lucky-item">energia: <strong id="lucky-energy"></strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-section reveal">
+    <p class="countdown-label">contagem regressiva</p>
+    <p class="countdown-title">tempo que falta para te ver &#x1F987;</p>
+    <div id="countdown-display" class="countdown-grid">
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-days">--</span>
+        <span class="countdown-unit">dias</span>
+      </div>
+      <span class="countdown-separator">:</span>
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-hours">--</span>
+        <span class="countdown-unit">horas</span>
+      </div>
+      <span class="countdown-separator">:</span>
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-mins">--</span>
+        <span class="countdown-unit">minutos</span>
+      </div>
+      <span class="countdown-separator">:</span>
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-secs">--</span>
+        <span class="countdown-unit">segundos</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="message-section">
+    <div class="message-box reveal">
+      <p class="message-quote">
+         oiee, voce é incrivelmente linda, amorosa e tao direta sobre o que quer, isso é tao admiravel,
+         conversamos a pouco tempo mas ja sinto uma conexão forte com voce, sei que é cedo mas espero realmente 
+         que possamos ter algo por que voce parece ser incrivel, voce é apaixonante e estou mais interessada em te 
+         conhecer a cada minuto que se passa!
+      </p>
+      <p class="message-sig">🦇¦ com carinho ana julia/tales 🦇¦</p>
+    </div>
+  </section>
+
+</div><!-- /.site -->
+
+<footer>
+  <p>Para Ágata 🦇</p>
+</footer>
+
+<script>
+// â”€â”€ STARFIELD / PARTICLE BACKGROUND â”€â”€
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, stars = [], particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Twinkling stars
+for (let i = 0; i < 260; i++) {
+  stars.push({
+    x: Math.random(),
+    y: Math.random(),
+    r: Math.random() * 1.8 + 0.35,
+    a: Math.random() * 0.55 + 0.25,
+    speed: Math.random() * 0.028 + 0.008,
+    glow: Math.random() > 0.78,
+    phase: Math.random() * Math.PI * 2
+  });
+}
+
+// Floating rose petal particles
+for (let i = 0; i < 22; i++) {
+  particles.push({
+    x: Math.random() * 1,
+    y: Math.random() * 1,
+    vy: -(Math.random() * 0.0003 + 0.0001),
+    vx: (Math.random() - 0.5) * 0.0002,
+    size: Math.random() * 5 + 3,
+    opacity: Math.random() * 0.35 + 0.05,
+    hue: 340 + Math.random() * 30,
+    rot: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.02
+  });
+}
+
+let t = 0;
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Deep night gradient
+  const bg = ctx.createRadialGradient(W*0.5, H*0.3, 0, W*0.5, H*0.5, Math.max(W,H)*0.8);
+  bg.addColorStop(0, '#160b1a');
+  bg.addColorStop(0.5, '#0d060f');
+  bg.addColorStop(1, '#050308');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle blood mist at bottom
+  const mist = ctx.createLinearGradient(0, H*0.6, 0, H);
+  mist.addColorStop(0, 'rgba(80,0,20,0)');
+  mist.addColorStop(1, 'rgba(80,0,20,0.12)');
+  ctx.fillStyle = mist;
+  ctx.fillRect(0, H*0.6, W, H*0.4);
+
+  // Twinkling stars
+  stars.forEach(s => {
+    const pulse = 0.35 + 0.65 * Math.sin(t * s.speed + s.phase) ** 2;
+    const a = Math.min(1, s.a * pulse);
+    ctx.beginPath();
+    ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(240,220,230,${a})`;
+    ctx.fill();
+
+    if (s.glow) {
+      ctx.save();
+      ctx.globalAlpha = a * 0.65;
+      ctx.strokeStyle = 'rgba(255,220,240,0.8)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(s.x * W - s.r * 3, s.y * H);
+      ctx.lineTo(s.x * W + s.r * 3, s.y * H);
+      ctx.moveTo(s.x * W, s.y * H - s.r * 3);
+      ctx.lineTo(s.x * W, s.y * H + s.r * 3);
+      ctx.stroke();
+      ctx.restore();
+    }
+  });
+
+  // Petal particles
+  particles.forEach(p => {
+    p.y += p.vy;
+    p.x += p.vx + Math.sin(t * 0.01 + p.phase) * 0.0001;
+    p.rot += p.rotSpeed;
+    if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); }
+
+    ctx.save();
+    ctx.translate(p.x * W, p.y * H);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.opacity;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.size, p.size * 1.6, 0, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${p.hue}, 70%, 35%)`;
+    ctx.fill();
+    ctx.restore();
+  });
+
+  t++;
+  requestAnimationFrame(drawBg);
+}
+
+particles.forEach(p => p.phase = Math.random() * Math.PI * 2);
+drawBg();
+
+// â”€â”€ SCROLL REVEAL â”€â”€
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// â”€â”€ RANDOM BATS â”€â”€
+function spawnBat() {
+  const bat = document.createElement('div');
+  bat.className = 'bat';
+  const wings = document.createElement('span');
+  wings.textContent = '🦇';
+  bat.appendChild(wings);
+
+  const fromLeft = Math.random() > 0.5;
+  const startY = Math.random() * 62 + 6;
+  const drift = Math.random() * 22 - 11;
+  const lift = Math.random() * 16 - 8;
+  const startX = fromLeft ? '-64px' : 'calc(100vw + 64px)';
+  const endX = fromLeft ? 'calc(100vw + 64px)' : '-64px';
+  const tiltA = fromLeft ? '-10deg' : '10deg';
+  const tiltB = fromLeft ? '12deg' : '-12deg';
+  const tiltC = fromLeft ? '-6deg' : '6deg';
+  const scale = (Math.random() * 0.55 + 0.75).toFixed(2);
+  const dur = Math.random() * 5 + 7;
+
+  bat.style.setProperty('--start-x', startX);
+  bat.style.setProperty('--end-x', endX);
+  bat.style.setProperty('--start-y', `${startY}vh`);
+  bat.style.setProperty('--end-y', `${startY + drift}vh`);
+  bat.style.setProperty('--x1', fromLeft ? '25vw' : '75vw');
+  bat.style.setProperty('--x2', fromLeft ? '52vw' : '48vw');
+  bat.style.setProperty('--x3', fromLeft ? '78vw' : '22vw');
+  bat.style.setProperty('--y1', `${startY + lift}vh`);
+  bat.style.setProperty('--y2', `${startY + drift * 0.45 - lift}vh`);
+  bat.style.setProperty('--y3', `${startY + drift * 0.72 + lift * 0.5}vh`);
+  bat.style.setProperty('--scale', scale);
+  bat.style.setProperty('--tilt-a', tiltA);
+  bat.style.setProperty('--tilt-b', tiltB);
+  bat.style.setProperty('--tilt-c', tiltC);
+  bat.style.setProperty('--dur', `${dur}s`);
+  bat.style.fontSize = (16 + Math.random() * 18) + 'px';
+
+  document.body.appendChild(bat);
+  setTimeout(() => bat.remove(), (dur + 0.5) * 1000);
+}
+setInterval(spawnBat, 2600);
+setTimeout(spawnBat, 1000);
+setTimeout(spawnBat, 2200);
+
+// â”€â”€ CLICK BLOOD SPLATTER â”€â”€
+document.addEventListener('click', e => {
+  const el = document.createElement('div');
+  el.className = 'splatter';
+  const size = 30 + Math.random() * 40;
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  el.style.left = e.clientX + 'px';
+  el.style.top = e.clientY + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 700);
+});
+
+// -- MOON EASTER EGG --
+(function () {
+  const moon    = document.querySelector('.hero-moon');
+  const overlay = document.getElementById('moon-modal-overlay');
+  const closeBtn = document.getElementById('moon-modal-close');
+
+  moon.addEventListener('click', () => overlay.classList.add('open'));
+  closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') overlay.classList.remove('open');
+  });
+})();
+
+// -- HOROSCOPO --
+(function () {
+  const mensagens = [
+    {
+      texto: "Hoje vai ser um daqueles dias gostosos que a gente não esquece tão fácil. A manhã começa levinha e o universo reservou pelo menos um momento especial só para você sorrir à toa — pode não saber ainda o motivo, mas vai acontecer. Aproveita cada minutinho, tá?",
+      cor: "rosa quartzo", energia: "aconchegante"
+    },
+    {
+      texto: "Os astros prometem que hoje você vai se sentir bem dentro da sua própria pele — daquele jeito tranquilo e gostoso de quem sabe quem é. Alguma coisa pequenininha vai te fazer o coração quentinho hoje, provavelmente quando você menos esperar. Fica de olho!",
+      cor: "rosa bebê", energia: "quentinha"
+    },
+    {
+      texto: "Hoje é dia de mimar a si mesma, gatinha. Os planetas estão todos do seu lado pedindo que você faça pelo menos uma coisa que te deixe feliz — seja tomar um chá gostoso, ouvir aquela música ou simplesmente descansar sem culpa. Você merece isso e muito mais.",
+      cor: "rosa chá", energia: "amorosa"
+    },
+    {
+      texto: "A lua está te mandando uma energia muito boa hoje! Pode ser que um pensamento fofo apareça do nada na sua cabeça, ou que alguém mande uma mensagem que vai te deixar com aquele sorrisinho bobo no rosto. O dia tem tudo para ser bem docinho.",
+      cor: "rosa aurora", energia: "docinha"
+    },
+    {
+      texto: "Vênus está do seu lado o dia inteiro hoje, Ágata. Isso significa que os momentos que parecem simples — uma conversa, um olhar, um detalhe bobo — vão guardar um carinho especial dentro deles. Presta atenção nas pequeninices, que é lá que mora a magia.",
+      cor: "rosa antigo", energia: "encantada"
+    },
+    {
+      texto: "Hoje os astros pedem que você respire fundo e deixe o dia fluir com calma. Vai ter pelo menos um momento em que você vai parar e pensar 'que bom que estou aqui'. O universo está conspirando para que hoje seja leve, gostoso e cheio de carinho.",
+      cor: "rosa névoa", energia: "serena"
+    },
+    {
+      texto: "O cosmos reservou surpresas fofas para você hoje! Não precisa nem sair de casa para sentir — às vezes é uma música que começa a tocar na hora certa, uma mensagem inesperada ou só aquela sensação boa de que o dia vai dar certo. E vai, pode confiar.",
+      cor: "rosa pétala", energia: "surpresa"
+    },
+    {
+      texto: "Hoje é um dia para você se sentir abraçada pelo universo, Ágata. As coisas vão se encaixando no lugar certinho, uma a uma. Se der uma saudade boba de alguém ou uma vontade de mandar uma mensagem fofa — vai lá, o dia está favorável para conexões do coração.",
+      cor: "rosa malva", energia: "acolhedora"
+    },
+    {
+      texto: "Os astros dizem que hoje você vai ter aquela energia boa de início de coisa bonita. Pode ser uma ideia nova, uma conversa que esquenta o coração ou só uma tarde que passa devagarinho e gostoso. O dia foi feito com cuidado pra você, gatinha — aproveita.",
+      cor: "rosa suave", energia: "radiante"
+    },
+    {
+      texto: "Hoje a energia está toda voltada para o que você sente. Os planetas pedem que você dê atenção para o que te faz bem — pessoas, músicas, lugares, pensamentos. Vai ser um dia que enche o coração de uma forma quieta e muito bonita. Tudo vai ficar bem.",
+      cor: "rosa pastel", energia: "sensível"
+    },
+    {
+      texto: "Marte tá te dando uma forcinha extra hoje! Vai ser um dia em que as coisas rendem, o humor fica leve e a disposição aparece do nada. Tem uma boa chance de acontecer algo pequenininho que vai te deixar sorrindo feito boba por um tempinho. Aproveita!",
+      cor: "rosa chiclete", energia: "animada"
+    },
+    {
+      texto: "Hoje os astros te mandam um recado bem simples: vai ser um dia bom. Não de forma grandiosa — mas daquele jeito gostoso de dia tranquilo, com momentos que aquecem o peito. Cuida de você, ri das coisas bobas e deixa o carinho que as pessoas te mandam pousar.",
+      cor: "rosa profundo", energia: "tranquila"
+    },
+    {
+      texto: "O universo pintou o céu de hoje com suas cores favoritas, Ágata. Vai ter um momento hoje que vai parecer pequeno mas vai ficar na memória — daqueles que a gente guarda sem querer. Fica presente, respira o dia com calma e deixa a felicidade chegar do jeitinho dela.",
+      cor: "rosa cerejeira", energia: "presente"
+    },
+    {
+      texto: "Hoje é um ótimo dia para se deixar sentir. Os astros estão todos conspirando para que você receba carinho — de pessoas, de músicas, de coincidências fofas que o universo arruma quando a gente menos espera. O dia tem gosto de coisa boa, pode acreditar.",
+      cor: "rosa flamingo", energia: "aberta"
+    },
+    {
+      texto: "Os planetas prometem um dia cheio de momentos quentinhos para você hoje. Pode ser que alguém pense em você sem motivo e sorria, ou que uma música toque bem na hora certa. O universo é fofo assim às vezes — e hoje ele resolveu ser fofo especialmente por você.",
+      cor: "rosa quartzo rosado", energia: "especial"
+    }
+  ];
+
+  const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const hoje = new Date();
+  const idx = hoje.getDate() % mensagens.length;
+  const msg = mensagens[idx];
+
+  const dateStr = `${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+
+  const btn = document.getElementById('horoscope-btn');
+  const card = document.getElementById('horoscope-card');
+  const textEl = document.getElementById('horoscope-text');
+  const dateEl = document.getElementById('horoscope-date-tag');
+  const colorEl = document.getElementById('lucky-color');
+  const energyEl = document.getElementById('lucky-energy');
+
+  textEl.textContent = msg.texto;
+  dateEl.textContent = dateStr;
+  colorEl.textContent = msg.cor;
+  energyEl.textContent = msg.energia;
+
+  let revealed = false;
+  btn.addEventListener('click', () => {
+    if (!revealed) {
+      revealed = true;
+      card.style.display = 'block';
+      requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('visible')));
+      btn.textContent = '✦ os astros falaram ✦';
+      btn.style.opacity = '0.6';
+      btn.style.cursor = 'default';
+      btn.style.pointerEvents = 'none';
+    }
+  });
+})();
+
+// -- COUNTDOWN --
+(function () {
+  const target = new Date('2026-05-30T00:00:00');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const now = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      const display = document.getElementById('countdown-display');
+      if (display) {
+        display.innerHTML = '<p class="countdown-done">hoje é o dia!! 🦇❤️</p>';
+      }
+      return;
+    }
+
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    const secs  = Math.floor((diff % 60000)    / 1000);
+
+    const dEl = document.getElementById('cd-days');
+    const hEl = document.getElementById('cd-hours');
+    const mEl = document.getElementById('cd-mins');
+    const sEl = document.getElementById('cd-secs');
+
+    if (dEl) dEl.textContent = pad(days);
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+    if (sEl) sEl.textContent = pad(secs);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>

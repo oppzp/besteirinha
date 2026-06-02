@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>mural secreto para Agata</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --night: #050308;
+    --night-soft: #120914;
+    --rose: #d4527f;
+    --rose-deep: #6b0030;
+    --blood: #8b0000;
+    --gold: #f0d890;
+    --text: #f5e6ea;
+    --muted: #c4a0b0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% 12%, rgba(212,82,127,0.15), transparent 28rem),
+      radial-gradient(circle at 82% 4%, rgba(240,216,144,0.12), transparent 22rem),
+      linear-gradient(180deg, var(--night) 0%, var(--night-soft) 54%, #09040b 100%);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.45;
+  }
+
+  main {
+    width: min(1040px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0 72px;
+    position: relative;
+  }
+
+  .secret-header {
+    min-height: 34vh;
+    display: grid;
+    align-content: center;
+    text-align: center;
+    padding: 24px 0 44px;
+  }
+
+  .secret-kicker {
+    color: var(--rose);
+    font-size: 0.9rem;
+    font-style: italic;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-top: 12px;
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    font-size: clamp(2.3rem, 8vw, 5rem);
+    line-height: 1.08;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 30px rgba(139,0,0,0.6);
+  }
+
+  .intro {
+    max-width: 680px;
+    margin: 22px auto 0;
+    color: var(--muted);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: clamp(1.1rem, 2.8vw, 1.45rem);
+    font-style: italic;
+  }
+
+  .photo-wall {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-flow: dense;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .photo-card {
+    border: 1px solid rgba(212,82,127,0.34);
+    border-radius: 6px;
+    background: rgba(18,9,20,0.72);
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.34);
+    position: relative;
+    grid-column: span 2;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .photo-card:hover {
+    transform: translateY(-5px) scale(1.015);
+    border-color: rgba(240,160,184,0.74);
+    box-shadow: 0 26px 70px rgba(0,0,0,0.44), 0 0 36px rgba(212,82,127,0.18);
+  }
+
+  .photo-card.size-small {
+    grid-column: span 2;
+  }
+
+  .photo-card.size-medium {
+    grid-column: span 3;
+  }
+
+  .photo-card.size-large {
+    grid-column: span 4;
+  }
+
+  .photo-card.size-tall {
+    grid-column: span 3;
+  }
+
+  .photo-card.size-wide {
+    grid-column: span 4;
+  }
+
+  .photo-card img {
+    width: 100%;
+    display: block;
+    height: auto;
+  }
+
+  .photo-card figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 42px 18px 16px;
+    background: linear-gradient(180deg, transparent 0%, rgba(5,3,8,0.78) 42%, rgba(5,3,8,0.95) 100%);
+    color: var(--text);
+    font-size: clamp(1rem, 2vw, 1.22rem);
+    font-style: italic;
+    line-height: 1.35;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+    z-index: 2;
+  }
+
+  .floating-heart {
+    position: absolute;
+    left: var(--heart-x);
+    bottom: 14px;
+    z-index: 3;
+    color: #ff77aa;
+    font-size: var(--heart-size);
+    line-height: 1;
+    pointer-events: none;
+    text-shadow: 0 0 10px rgba(255,119,170,0.9), 0 0 18px rgba(212,82,127,0.45);
+    transform: translate(-50%, 0) rotate(var(--heart-rotate));
+    animation: heartFloat var(--heart-duration) ease-out forwards;
+  }
+
+  @keyframes heartFloat {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 0) scale(0.45) rotate(var(--heart-rotate));
+    }
+    14% { opacity: 1; }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--heart-drift)), -150px) scale(1.25) rotate(calc(var(--heart-rotate) + 24deg));
+    }
+  }
+
+  .note {
+    margin: 36px auto 0;
+    max-width: 760px;
+    padding: 28px;
+    border-left: 2px solid var(--rose);
+    background: linear-gradient(90deg, rgba(107,0,48,0.25), transparent);
+    color: var(--text);
+    font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+    font-style: italic;
+  }
+
+  .signature {
+    margin-top: 18px;
+    color: var(--gold);
+    text-align: right;
+  }
+
+  @media (max-width: 720px) {
+    main { width: min(100% - 22px, 1040px); padding-top: 34px; }
+    .secret-header { min-height: 28vh; padding-bottom: 28px; }
+    .photo-wall { grid-template-columns: 1fr; gap: 14px; }
+    .photo-card,
+    .photo-card.size-small,
+    .photo-card.size-medium,
+    .photo-card.size-large,
+    .photo-card.size-tall,
+    .photo-card.size-wide {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .photo-card figcaption { padding: 48px 16px 16px; }
+    .note { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="secret-header">
+    <p class="secret-kicker">mural secreto</p>
+    <h1>para Agata</h1>
+    <p class="intro">voce achou o emoji raro, entao ganhou esse cantinho escondido so seu.</p>
+  </header>
+
+  <section class="photo-wall" id="photo-wall" aria-label="Mural secreto de fotos"></section>
+
+  <section class="note" aria-label="Recado especial">
+    <p>um lugarzinho escondido para lembrar que, mesmo no meio de toda essa noite escura cheia de morceguinhos, voce ainda brilha mais que a lua minha rainha, eu te amo.</p>
+    <p class="signature">com carinho</p>
+  </section>
+</main>
+<script>
+  const muralPhotos = [
+    { src: 'mural/fotom (1).jpg', comment: 'preciso mesmo falar algo sobre essa gostosura??' },
+    { src: 'mural/fotom (2).jpg', comment: 'voce EXALA empoderamento!' },
+    { src: 'mural/fotom (3).jpg', comment: 'meu deus sou seu cachorrinho au au' },
+    { src: 'mural/fotom (4).jpg', comment: 'que mulher poderosa ainda bem que é MINHA' },
+    { src: 'mural/fotom (5).jpg', comment: 'olha essa mulher, que linda, que perfeita' },
+    { src: 'mural/fotom (6).JPG', comment: 'voce e niná sendo tao fofas' },
+    { src: 'mural/fotom (7).JPG', comment: 'minha princesa tao linda esse biquinho tao lindo ' },
+    { src: 'mural/fotom (8).jpg', comment: 'MEU DEUS AAAAAAAAAAAAAAAAAAA' },
+    { src: 'mural/fotom (9).jpg', comment: 'JESUS ME DA ESSA MULHER PELO AMOR DE DEEEEEEEEEEEEUS' },
+    { src: 'mural/fotom (10).jpg', comment: 'BIXA COMO VC É TAO LINDA ASSIM????' },
+    { src: 'mural/fotom (11).jpg', comment: 'só minha, faço qualquer coisa pra continuar sendo minha' },
+    { src: 'mural/fotom (12).jpg', comment: 'o jeito que vc se move é tao lindinho' },
+    { src: 'mural/fotom (13).jpg', comment: 'voce tem um jeito lindo de transformar qualquer momento em coisa especial.' },
+    { src: 'mural/fotom (14).jpg', comment: 'essa foto me lembra o quanto e facil gostar de voce.' },
+    { src: 'mural/fotom (15).jpg', comment: 'minha bonequinha de porcelana' },
+    { src: 'mural/fotom (16).jpg', comment: 'eu amo guardar suas fotos na minha memoria' },
+    { src: 'mural/fotom (17).jpg', comment: 'esses olhinhos tao perfeitos' },
+    { src: 'mural/fotom (18).jpg', comment: 'fico tao bobo olhando suas fotos' },
+    { src: 'mural/fotom (19).jpg', comment: 'tao lindinha' },
+    { src: 'mural/fotom (20).jpg', comment: 'minha ursinha de pelucia quero dormir abraçado com vc' },
+    { src: 'mural/fotom (21).jpg', comment: 'minha princesa linda' },
+    { src: 'mural/fotom (22).jpg', comment: 'essa foto guarda uma delicadeza que eu nao queria deixar passar.' },
+    { src: 'mural/fotom (23).jpg', comment: 'minha pitica' },
+    { src: 'mural/fotom (24).jpg', comment: 'voce consegue ser linda ate nos detalhes que talvez vc nem perceba.' },
+    { src: 'mural/fotom (25).jpg', comment: 'ESSE BIQUINHO Q JUDIAÇÃO COM MEU NENEM' },
+    { src: 'mural/fotom (26).jpg', comment: 'meu deus, vc de vermelho é uma maldade viu' },
+    { src: 'mural/fotom (27).jpg', comment: 'essa é minha definição do que é lindo' },
+    { src: 'mural/fotom (28).jpg', comment: 'por favor seja minha por favor seja minha por favor seja minha' },
+    { src: 'mural/fotom (29).jpg', comment: 'OLHA ESSA BOCA AAAAAAAAAAA' },
+    { src: 'mural/fotom (30).jpg', comment: 'estou perdido no escuro dos seus olhos sabia?' },
+    { src: 'mural/fotom (31).jpg', comment: 'um pedacinho de voce que eu queria deixar brilhando aqui' },
+    { src: 'mural/fotom (32).jpg', comment: 'que gostosa perfeita rainha bonequinha linda' },
+    { src: 'mural/fotom (33).jpg', comment: 'estou de joelhos para vc' },
+    { src: 'mural/fotom (34).jpg', comment: 'nem sei oq faço se vc me olhar assim, vou desmontar na hora' },
+    { src: 'mural/fotom (35).jpg', comment: 'top fotos que fico babando em te olhar' },
+    { src: 'mural/fotom (36).jpg', comment: 'senhor amem' },
+    { src: 'mural/fotom (38).jpg', comment: 'posso ser seu por favor??' },
+    { src: 'mural/fotom (39).jpg', comment: 'olha esse rostinho que lindo' },
+    { src: 'mural/fotom (45).jpg', comment: 'MEU DEUS AGATA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' }
+  ];
+
+  function shuffle(items) {
+    const shuffled = [...items];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  const wall = document.getElementById('photo-wall');
+  const sizeClasses = [
+    'size-small',
+    'size-small',
+    'size-medium',
+    'size-medium',
+    'size-large',
+    'size-tall',
+    'size-wide'
+  ];
+
+  function pickSizeClass(index) {
+    if (index === 0) return 'size-large';
+    if (index === 1) return 'size-tall';
+    return sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
+  }
+
+  function releaseHeart(card) {
+    const heart = document.createElement('span');
+    heart.className = 'floating-heart';
+    heart.textContent = String.fromCodePoint(0x2665);
+    heart.style.setProperty('--heart-x', `${Math.random() * 72 + 14}%`);
+    heart.style.setProperty('--heart-size', `${Math.random() * 0.75 + 1.05}rem`);
+    heart.style.setProperty('--heart-drift', `${Math.random() * 70 - 35}px`);
+    heart.style.setProperty('--heart-rotate', `${Math.random() * 42 - 21}deg`);
+    heart.style.setProperty('--heart-duration', `${Math.random() * 0.9 + 1.8}s`);
+    card.appendChild(heart);
+    setTimeout(() => heart.remove(), 2800);
+  }
+
+  function startHearts(card) {
+    const burst = () => {
+      releaseHeart(card);
+      if (Math.random() > 0.35) setTimeout(() => releaseHeart(card), 180);
+    };
+
+    card.addEventListener('mouseenter', burst);
+    card.addEventListener('click', burst);
+
+    setInterval(() => {
+      if (Math.random() > 0.62) releaseHeart(card);
+    }, Math.random() * 2600 + 2600);
+  }
+
+  shuffle(muralPhotos).forEach((photo, index) => {
+    const figure = document.createElement('figure');
+    const img = document.createElement('img');
+    const caption = document.createElement('figcaption');
+
+    figure.className = `photo-card ${pickSizeClass(index)}`;
+    img.src = photo.src;
+    img.alt = `Foto especial ${index + 1}`;
+    caption.textContent = photo.comment;
+
+    figure.appendChild(img);
+    figure.appendChild(caption);
+    wall.appendChild(figure);
+    startHearts(figure);
+  });
+</script>
+</body>
+</html>
